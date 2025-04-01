@@ -3,8 +3,7 @@ import sys
 from pattern_matching import execution_time_gathering
 
 
-def choose_algortihms():
-    sys.setrecursionlimit(5000)
+def choose_algorithms():
 
     print("""Please enter the algorithms to test:
     1. Naive Approach
@@ -45,4 +44,4 @@ def choose_algortihms():
 
     plt.show()
 
-choose_algortihms()
+choose_algorithms()

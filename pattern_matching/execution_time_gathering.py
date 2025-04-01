@@ -16,13 +16,13 @@ def take_execution_time(minimum_size, maximum_size, step, samples_by_size):
 
     return return_table
 
-def take_execution_time_choose(minimum_size, maximum_size, step, samples_by_size, algorithms, isPalindrome):
+def take_execution_time_choose(minimum_size, maximum_size, step, samples_by_size, algorithms):
     return_table = []
 
     for size in range(minimum_size, maximum_size + 1, step):
         print("Processing size: " + str(size))
         table_row = [size]
-        times = take_times_choose(size, samples_by_size, algorithms, isPalindrome)
+        times = take_times_choose(size, samples_by_size, algorithms)
         return_table.append(table_row + times)
 
     return return_table
@@ -34,28 +34,24 @@ def take_execution_time_choose(minimum_size, maximum_size, step, samples_by_size
 
 
 def take_times(size, samples_by_size):
-    samples = data_generator.generate_palindromes(size, samples_by_size, True)
+    samples = data_generator.generate_sample_strings(size, samples_by_size)
 
     return [
-        take_time_for_algorithm(samples, algorithms.two_pointers),
-        take_time_for_algorithm(samples, algorithms.reverse_string),
-        take_time_for_algorithm(samples, algorithms.recursive),
-        take_time_for_algorithm(samples, algorithms.stack),
+        take_time_for_algorithm(samples, algorithms.naive_approach),
+        take_time_for_algorithm(samples, algorithms.rabin_karp),
+        take_time_for_algorithm(samples, algorithms.kmp),
     ]
 
 def take_times_choose(size, samples_by_size, algorithmsChoosed):
     results = []
-    # samples = data_generator.generate_palindromes(size, samples_by_size)
-    samples = []
+    samples = data_generator.generate_worst_case(size, samples_by_size)
 
     if 1 in algorithmsChoosed:
-        results.append(take_time_for_algorithm(samples, algorithms.two_pointers))
+        results.append(take_time_for_algorithm(samples, algorithms.naive_approach))
     if 2 in algorithmsChoosed:
-        results.append(take_time_for_algorithm(samples, algorithms.reverse_string))
+        results.append(take_time_for_algorithm(samples, algorithms.rabin_karp))
     if 3 in algorithmsChoosed:
-        results.append(take_time_for_algorithm(samples, algorithms.recursive))
-    if 4 in algorithmsChoosed:
-        results.append(take_time_for_algorithm(samples, algorithms.stack))
+        results.append(take_time_for_algorithm(samples, algorithms.kmp))
 
     return results
 
@@ -66,9 +62,9 @@ def take_times_choose(size, samples_by_size, algorithmsChoosed):
 def take_time_for_algorithm(samples_array, pattern_approach):
     times = []
 
-    for sample in samples_array:
+    for i in range(len(samples_array)):
         start_time = time.time()
-        pattern_approach(sample)
+        pattern_approach(samples_array[0][i], samples_array[1][i])
         times.append(constants.TIME_MULTIPLIER * (time.time() - start_time))
 
     times.sort()
