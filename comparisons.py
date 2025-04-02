@@ -13,16 +13,16 @@ def choose_algorithms():
     algorithmsNames = ["Naive Approach", "Rabin-Karp", "KMP"]
 
     print("Enter the minimum size of the strings to test:")
-    minimum_size = int(input())
+    minimum_size = int(input().strip())
     
     print("Enter the maximum size of the strings to test:")
-    maximum_size = int(input())
+    maximum_size = int(input().strip())
 
     print("Enter the step: ")
-    step = int(input())
+    step = int(input().strip())
 
     print("Enter the amount of samples by size: ")
-    samples_by_size = int(input())
+    samples_by_size = int(input().strip())
 
     data = execution_time_gathering.take_execution_time_choose(minimum_size, maximum_size, step, 
                                                                samples_by_size, algorithms)
@@ -38,7 +38,7 @@ def choose_algorithms():
 
     plt.xlabel("Tamaño de los datos")
     plt.ylabel("Tiempo de ejecución en ms")
-    plt.title("Comparación algoritmos de decisión de pattern matching")
+    plt.title("Comparación algoritmos de Pattern Matching")
 
     plt.legend()
 

@@ -1,69 +1,70 @@
 def naive_approach(text, pattern):
-    index = []
-    n = len(text)
-    m = len(pattern)
-    for s in range(n - m + 1):
-        if pattern == text[s : s + m]:
-            index.append(s)
-    return index
+    index = []                          # O(1)
+    n = len(text)                       # O(1)
+    m = len(pattern)                    # O(1)
+    for s in range(n - m + 1):          # O(n - m + 1)
+        if pattern == text[s : s + m]:  # O(m)
+            index.append(s)             # O(1)
+    return index                        # O(1)
 
-# O((n - m  + 1) * m) 
+# Worst Case = O(m * (n - m + 1))
+# Best Case = O(n - m) The first character of the pattern isn't present in the text
 
 def rabin_karp(text, pattern):
-    n = len(text)
-    m = len(pattern)
-    d = 62
-    prime = 1000000007
-    hashP = 0
-    hashT = 0
-    index = []
-    h = (d ** (m-1)) % prime
-    for i in range(m):
-        hashP = (d * hashP + ord(pattern[i])) % prime
-        hashT = (d * hashT + ord(text[i])) % prime
-    for s in range(n - m + 1):
-        if hashP == hashT:
-            if pattern == text[s : s + m]:
-                index.append(s)
-        if s < n - m:
-            hashT = (d*(hashT - ord(text[s])*h) + ord(text[s + m])) % prime
-    return index
+    n = len(text)                                                               # O(1)
+    m = len(pattern)                                                            # O(1)
+    d = 62                                                                      # O(1)
+    prime = 1000000007                                                          # O(1)
+    hashP = 0                                                                   # O(1)
+    hashT = 0                                                                   # O(1)
+    index = []                                                                  # O(1)
+    h = (d ** (m-1)) % prime                                                    # O(1)
+    for i in range(m):                                                          # O(m)
+        hashP = (d * hashP + ord(pattern[i])) % prime                           # O(1)
+        hashT = (d * hashT + ord(text[i])) % prime                              # O(1)
+    for s in range(n - m + 1):                                                  # O(n - m + 1)
+        if hashP == hashT:                                                      # O(1)
+            if pattern == text[s : s + m]:                                      # O(m)
+                index.append(s)                                                 # O(1)
+        if s < n - m:                                                           # O(1)
+            hashT = (d*(hashT - ord(text[s])*h) + ord(text[s + m])) % prime     # O(1)
+    return index                                                                # O(1)
 
-# O(n * m)
-# Best O(n + m)
+# Worst Case: O(m * (n - m + 1)) It has a bad hash function and the algorithm checks every spurious hit
+# Best Case O(n + m)
 
 def kmp_lps(pattern):
-    l = 0
-    i = 1
-    lps = [0 for _ in range(len(pattern))]
-    while i < len(pattern):
-        if pattern[i] == pattern[l]:
-            l += 1
-            lps[i] = l
-            i += 1
-        else:
-            if l != 0:
-                l = lps[l - 1]
-            else:
-                i += 1
-    return lps
+    l = 0                                           # O(1)
+    i = 1                                           # O(1)
+    lps = [0 for _ in range(len(pattern))]          # O(m)
+    while i < len(pattern):                         # O(m)
+        if pattern[i] == pattern[l]:                # O(1)
+            l += 1                                  # O(1)
+            lps[i] = l                              # O(1)
+            i += 1                                  # O(1)
+        else:                                       # O(1)
+            if l != 0:                              # O(1)
+                l = lps[l - 1]                      # O(1)
+            else:                                   # O(1)
+                i += 1                              # O(1)
+    return lps                                      # O(1)
 
 def kmp(text, pattern):
-    i = j = 0
-    lps = kmp_lps(pattern)
-    index = []
-    while i < len(text):
-        if text[i] == pattern[j]:
-            i += 1
-            j += 1
-        else:
-            if j != 0:
-                j = lps[j-1]
-            else:
-                i += 1
-        if j == len(pattern):
-            index.append(abs(len(pattern) - i))
-            j = lps[j-1]
-    return index
+    i = j = 0                                       # O(1)
+    lps = kmp_lps(pattern)                          # O(m)
+    index = []                                      # O(1)
+    while i < len(text):                            # O(n)
+        if text[i] == pattern[j]:                   # O(1)
+            i += 1                                  # O(1)
+            j += 1                                  # O(1)
+        else:                                       # O(1)
+            if j != 0:                              # O(1)
+                j = lps[j-1]                        # O(1)
+            else:                                   # O(1)
+                i += 1                              # O(1)
+        if j == len(pattern):                       # O(1)
+            index.append(abs(len(pattern) - i))     # O(1)
+            j = lps[j-1]                            # O(1)
+    return index                                    # O(1)
 
-# O(m + n)
+# Worst and Best Case = O(n + m)
